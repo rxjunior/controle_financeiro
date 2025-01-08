@@ -1,0 +1,43 @@
+CREATE TABLE cartoes (
+  id_cartao INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  bandeira  TEXT    NOT NULL,
+  portador  TEXT    NOT NULL,
+  emissor   TEXT    NOT NULL,
+  limite    REAL    NOT NULL
+);
+
+CREATE TABLE categoria (
+  id_categoria  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  categoria     TEXT    NOT NULL,
+  sub_categoria TEXT    NOT NULL UNIQUE
+);
+
+CREATE TABLE desp_cartoes (
+  id_desp_cartoes INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  dt_desp_cartoes TEXT    NOT NULL DEFAULT CURRENT_DATE,
+  valor           REAL    NOT NULL,
+  vencimento      TEXT    NOT NULL,
+  parcela         TEXT    NOT NULL,
+  credor          TEXT    NOT NULL,
+  descricao       TEXT    NOT NULL,
+  id_categoria    INTEGER NOT NULL REFERENCES categoria (id_categoria),
+  id_cartao       INTEGER NOT NULL REFERENCES cartoes (id_cartao)
+);
+
+CREATE TABLE desp_debito_cta (
+  id_desp_cta  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  dt_desp_cta  TEXT    NOT NULL DEFAULT CURRENT_DATE,
+  valor        REAL    NOT NULL,
+  vencimento   TEXT    NOT NULL,
+  parcela      TEXT    NOT NULL,
+  credor       TEXT    NOT NULL,
+  descricao    TEXT    NOT NULL,
+  id_categoria INTEGER NOT NULL REFERENCES categoria (id_categoria)
+);
+
+CREATE TABLE orcamento (
+  id_orcamento INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  id_categoria NUMERIC NOT NULL REFERENCES categoria (id_categoria),
+  mes_ref      INTEGER NOT NULL,
+  ano_ref      INTEGER NOT NULL
+);
